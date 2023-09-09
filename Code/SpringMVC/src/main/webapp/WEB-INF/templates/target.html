@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>目标</title>
+</head>
+<body>
+HelloWorld
+<br/>
+<a th:href="@{/hello}">HelloWorld</a><br/>
+<a th:href="@{/test/testRequestParam(username='admin',password=123456)}">测试@RequestMapping的params属性-->/test</a><br>
+
+<a th:href="@{/test/testRequestParam/1/admin}">测试路径中的占位符-->/testRest</a><br>
+</body>
+</html>

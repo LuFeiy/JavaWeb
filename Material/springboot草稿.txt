@@ -1,0 +1,30 @@
+大纲：
+
+
+web开发：
+  ·  静态资源的处理，默认是放到resource/static文件夹。网站图标命名favicon.ico，放在静态资源目录下即可
+  ·  欢迎页默认是static/index.html,如果要指定的话就是
+  ·  @RestController 和 @Controller注解在使用上有区别
+  ·  springboot中实现rest请求：两个input模拟(一个带name="_method")，开启spring.mvc.hiddenmethod.filte.enabled= true，controller中用@GetMapping("/user")这种特殊注解
+  ·  @PathVariable和@RequestParam还有@RequestAttribute有何区别
+
+
+
+
+
+
+
+杂项
+1.springboot好像不像spring那样，从理念上有大的创新。但是它通过约定大于配置的概念大大简化了开发的复杂度
+
+
+
+
+
+
+
+
+问题:
+1. springboot项目一般都把spring-boot-starter-parent当做一个parent项目，说是可以用到一些默认的配置和依赖项，受限于maven知识，这里是不理解的
+2. 还有各种starter场景启动器，好像很神奇的插件一样，自己也是不理解的，这个等后面maven知识学了之后要在回过来理解下
+3. 为什么引入了start就是引入了功能，我的理解，在pom里面改动，代码中不引入的话实际不会作用的

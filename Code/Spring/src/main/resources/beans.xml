@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--
+    配置HelloWorld所对应的bean，即将HelloWorld的对象交给Spring的IOC容器管理
+    通过bean标签配置IOC容器所管理的bean
+    属性：
+        id：设置bean的唯一标识
+        class：设置bean所对应类型的全类名
+	-->
+    <bean id="helloWorld" class="com.yuan.spring.hello.HelloWorld"/>
+    <!--<bean id="helloWorld" class="java.lang.String"/>-->
+
+    <bean id="dog" class="com.yuan.spring.ioc.GetBeanTest.Dog"/>
+
+    <bean id="studentOne" class="com.yuan.spring.ioc.Student">
+        <!--property标签：通过组件类的setXxx()方法给组件对象设置属性-->
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+    </bean>
+
+    <bean id="studentTwo" class="com.yuan.spring.ioc.Student">
+        <!--constructor-arg标签：通过组件类的有参构造方法给组件对象设置属性-->
+        <!--可以通过index或name来指定参数，不然就要按照顺序，乱序会报错-->
+        <constructor-arg  value="1002"/>
+        <constructor-arg  value="李四"/>
+        <constructor-arg  value="23"/>
+        <constructor-arg  value="男"/>
+    </bean>
+
+    <bean id="studentThree" class="com.yuan.spring.ioc.Student">
+        <property name="id" value="1001"/>
+        <!--<property name="name" value="null"/> 这种会当做字符串"null"-->
+        <property name="name">
+            <null/>
+        </property>
+        <!--xml实体-->
+        <property name="age" value="a &lt; b"/>
+        <!--CDATA字节-->
+        <property name="sex">
+            <value><![CDATA[c < d]]></value>
+        </property>
+    </bean>
+
+    <bean id="clazzOne" class="com.yuan.spring.ioc.Clazz">
+        <property name="clazzId" value="1111"/>
+        <property name="clazzName" value="财源滚滚班"/>
+    </bean>
+
+    <bean id="studentFour" class="com.yuan.spring.ioc.Student">
+        <!--property标签：通过组件类的setXxx()方法给组件对象设置属性-->
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+        <property name="clazz" ref="clazzOne"/>
+    </bean>
+
+    <bean id="studentFive" class="com.yuan.spring.ioc.Student">
+        <!--property标签：通过组件类的setXxx()方法给组件对象设置属性-->
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+        <property name="clazz">
+            <!-- 在一个bean中再声明一个bean就是内部bean -->
+            <!-- 内部bean只能用于给属性赋值，不能在外部通过IOC容器获取，因此可以省略id属性 -->
+            <bean class="com.yuan.spring.ioc.Clazz">
+                <property name="clazzId" value="2222"/>
+                <property name="clazzName" value="远大前程班"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="studentSix" class="com.yuan.spring.ioc.Student">
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+        <property name="clazz" ref="clazzOne"></property>
+        <property name="clazz.clazzId" value="3333"/>
+        <property name="clazz.clazzName" value="最强王者班"/>
+    </bean>
+
+    <bean id="studentSeven" class="com.yuan.spring.ioc.Student">
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+        <property name="clazz" ref="clazzOne"></property>
+        <property name="hobbies">
+            <array>
+                <value>抽烟</value>
+                <value>喝酒</value>
+                <value>烫头</value>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="clazzTwo" class="com.yuan.spring.ioc.Clazz">
+        <property name="clazzId" value="1111"/>
+        <property name="clazzName" value="财源滚滚班"/>
+        <property name="students">
+            <list>
+                <ref bean="studentOne"></ref>
+                <ref bean="studentTwo"></ref>
+                <ref bean="studentThree"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="studentNine" class="com.yuan.spring.ioc.Student"
+          p:id="1006" p:name="小明" p:age="22" p:sex="男" p:clazz-ref="clazzOne">
+    </bean>
+
+    <!-- 引入外部属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${jdbc.url}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- 配置 JdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 装配数据源 -->
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+
+    <!-- scope属性：取值singleton（默认值），bean在IOC容器中只有一个实例，IOC容器初始化时创建对象 -->
+    <!-- scope属性：取值prototype，bean在IOC容器中可以有多个实例，getBean()时创建对象 -->
+    <bean id="suser" class="com.yuan.spring.ioc.User" scope="singleton"></bean>
+    <bean id="puser" class="com.yuan.spring.ioc.User" scope="prototype"></bean>
+
+
+    <bean class="com.yuan.spring.ioc.Cat" init-method="initMethod" destroy-method="destroyMethod">
+        <property name="name" value="tom"/>
+    </bean>
+
+    <!-- bean的后置处理器要放入IOC容器才能生效 打印太多了,一般屏蔽掉 -->
+    <!--<bean id="myBeanProcessor" class="com.yuan.spring.ioc.Mybeanprocessor"/>-->
+
+    <bean id="user" class="com.yuan.spring.ioc.UserFactoryBean"></bean>
+
+    <bean id="userController" class="com.yuan.spring.ioc.UserController" autowire="byType"></bean>
+    <bean id="userService" class="com.yuan.spring.ioc.UserService" autowire="byName"></bean>
+    <bean id="userDao" class="com.yuan.spring.ioc.UserDao"></bean>
+
+    <!--作用是什么-->
+    <context:component-scan base-package="com.yuan.spring.aop"/>
+
+    <bean id="LogAspect" class="com.yuan.spring.aop.LogAspect"/>
+
+    <bean id="calculator" class="com.yuan.spring.aop.CalculatorImpl"/>
+
+    <aop:config>
+        <aop:aspect ref="LogAspect">
+            <aop:pointcut id="pointCut" expression="execution(* com.yuan.spring.aop.CalculatorImpl.*(..))"/>
+            <!--前置通知-->
+            <aop:before method="beforeMethod" pointcut-ref="pointCut"/>
+            <aop:after method="afterMethod" pointcut-ref="pointCut"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!--开启组件扫描,指定扫描的包-->
+    <context:component-scan base-package="com.yuan.spring.annotation">
+    </context:component-scan>
+
+</beans>

@@ -1,0 +1,3 @@
+通过下面命令创建了一个maven的工程，只包含Junit的依赖
+mvn archetype:generate -DgroupId=com.yuan -DartifactId=maven-hello -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+

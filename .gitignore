@@ -1,0 +1,5 @@
+# 忽略所有的 target 文件夹
+/target/
+
+# 忽略所有的 .idea 文件夹
+**/.idea/**
